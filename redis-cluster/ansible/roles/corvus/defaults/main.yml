@@ -1,0 +1,9 @@
+---
+corvus_version: 'master'
+corvus_install_path: /opt/corvus
+corvus_src_path: '{{ ansible_env.HOME }}/corvus'
+corvus_port: 12345
+corvus_user: vagrant
+corvus_group: vagrant
+corvus_num_threads: 2
+corvus_max_open_files: 204800
