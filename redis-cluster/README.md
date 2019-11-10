@@ -1,5 +1,5 @@
 # redis-ansible-cluster
-The demo sets up 6 redis instances, 1 corvus instance, and 1 instance for testing
+The demo sets up 6 redis instances, 1 corvus instance, and 1 instance to run tests.
 
 ## Installation (MacOS)
 
@@ -56,8 +56,37 @@ Locate the ipv4 address of corvus
 redis-benchmark -h 10.55.0.8 -p 12345 -t set,get -n 100000 -c 20
 ```
 
+There is also a very simple test script available for PHP that tests phpredis against corvus:
+
 ```
 ansible-playbook provision_redis_test.yml
 vagrant ssh redis-client
 php redis-test.php
+```
+
+## Redis Cluster Reset
+You can use ansible ad hoc commands to reset the cluster
+
+```
+cd ansible
+ansible redis -m shell -a 'redis-cli FLUSHALL'
+ansible redis -m shell -a 'redis-cli CLUSTER RESET'
+```
+
+## Add More Nodes To Redis Cluster
+Best resource to add nodes in redis-cluster is found [here](https://redis.io/topics/cluster-tutorial)
+
+
+## Debugging
+Corvus logs are present at /var/log/syslog or by using `journalctl`
+
+```
+sudo journalctl -u corvus.service
+```
+
+You may run into issues after VMs have been shut down. These are usually fixed by re-running `vagrant provision` so that ansible has updated IP addresses and forcing fact gathering:
+
+```
+cd ansible
+ansible-playbook gather_facts.yml
 ```
