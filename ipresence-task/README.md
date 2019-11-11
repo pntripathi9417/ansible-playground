@@ -53,11 +53,38 @@ cluster_stats_messages_ping_received:1793
 
 #### Debugging
 
-1. In case `cluster_state` is `fail` try re-running `sudo docker-compose up -d --build --scale redis=6`
+1. In case `cluster_state` is `fail` try re-running `sudo docker-compose up -d --build --scale redis=6` from within the vagrant box.
 
 ## rabbitmq-cluster
+This demo creates a 3 Node rabbitmq cluster behind HAProxy loadbalancer.
 
 ### Getting Started
 
+#### Provision RabbitMQ Cluster
+
+```
+cd ansible
+ansible-playbook provision_rabbitmq_cluster.yaml
+```
+
+#### Verify RabbitMQ Cluster
+
+1. You can access HAProxy status report by accessing `http://localhost:1936/haproxy?stats` with the credentials `haproxy:haproxy`
+2. You can access rabbitmq console via `http://localhost:15672/` with the credentials `admin:Admin@123`
+
+#### Debugging
+
 ## mysql-replication
 
+### Getting Started
+
+#### Provision MySQL replicaset
+
+```
+cd ansible
+ansible-playbook provision_mysql_cluster.yaml
+```
+
+#### Verify MySQL Replicaset
+
+#### Debugging
