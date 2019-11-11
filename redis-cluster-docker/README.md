@@ -18,7 +18,17 @@ The demo sets up 6 redis instances - 3 master and 3 slaves
 
 ### Getting Started
 
+#### Provision Redis Cluster
 ```
 cd ansible
 ansible-playbook provision_redis_cluster.yaml
+```
+
+#### Verify Redis Cluster
+
+```
+vagrant ssh
+sudo docker ps
+redis-cli -p ${PORT} # take port from one of the redis instance
+cluster info
 ```
