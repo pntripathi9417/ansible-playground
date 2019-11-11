@@ -1,0 +1,48 @@
+---
+- hosts: all
+  become: true
+  vars:
+    create_containers: 6
+    default_container_name: redis
+    default_container_image: redis:5.0.6
+    default_container_command: redis-server
+    docker_volume: "rdbdata"
+    docker_network: "redis-cluster-network"
+
+  tasks:
+    - name: Install aptitude using apt
+      apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+
+    - name: Install required system packages
+      apt: name={{ item }} state=latest update_cache=yes
+      loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python-pip', 'virtualenv', 'python-setuptools', 'redis-tools']
+
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/debian/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/debian stretch stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      apt: update_cache=yes name=docker-ce state=latest
+
+    - name: Install Docker Module for Python
+      pip: name={{ item }} state=latest
+      loop: ['docker', 'docker-compose']
+    
+    - name: "Create rabbitmq nodes"
+      docker_compose:
+        project_src: "/vagrant/ansible/rabbitmq-cluster/"
+        build: yes
+
+    - name: "Add rabbitmq nodes to cluster"
+      shell: "sudo docker exec -ti rabbitmq-node-2 bash -c 'rabbitmqctl stop_app' &&
+              sudo docker exec -ti rabbitmq-node-2 bash -c 'rabbitmqctl join_cluster rabbit@rabbitmq-node-1' &&
+              sudo docker exec -ti rabbitmq-node-2 bash -c 'rabbitmqctl start_app' &&
+              sudo docker exec -ti rabbitmq-node-3 bash -c 'rabbitmqctl stop_app' &&
+              sudo docker exec -ti rabbitmq-node-3 bash -c 'rabbitmqctl join_cluster rabbit@rabbitmq-node-1' &&
+              sudo docker exec -ti rabbitmq-node-3 bash -c 'rabbitmqctl start_app';"
