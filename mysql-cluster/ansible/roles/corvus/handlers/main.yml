@@ -1,0 +1,4 @@
+---
+- name: restart corvus
+  service: name=corvus state=restarted
+  become: true

@@ -1,0 +1,16 @@
+- hosts: redis-client
+  roles:
+    - dotdeb
+  tasks:
+    - include: tasks/set_hosts.yml
+    - name: 'Install packages'
+      apt: 
+        pkg:
+          - php-cli
+          - php-redis
+          - redis-tools
+        state: latest 
+        update_cache: yes
+      become: true
+    - name: Copy test script
+      template: src=templates/redis-test.php dest={{ ansible_env.HOME}}

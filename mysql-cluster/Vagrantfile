@@ -1,0 +1,60 @@
+# Configuration Variables
+CPUS    = 1
+RAM     = 256 # Default memory size is in MB
+IP_POOL = "10.55.0.0/24" # IP address pool for communication among VMs
+BOX = "debian/stretch64"
+
+HOSTS = {
+  "redis-client" => [BOX, CPUS, RAM],
+  "corvus-1"     => [BOX, CPUS, RAM],
+  "redis-1"      => [BOX, CPUS, RAM],
+  "redis-2"      => [BOX, CPUS, RAM],
+  "redis-3"      => [BOX, CPUS, RAM],
+  "redis-4"      => [BOX, CPUS, RAM],
+  "redis-5"      => [BOX, CPUS, RAM],
+  "redis-6"      => [BOX, CPUS, RAM]
+}
+
+GROUPS = {
+  "corvus" => ["corvus-1"],
+  "redis"  => ["redis-1","redis-2","redis-3","redis-4","redis-5","redis-6"]
+}
+
+VAGRANTFILE_DIR = File.dirname(__FILE__)
+ANSIBLE_INVENTORY_DIR = "#{VAGRANTFILE_DIR}/ansible/inventory"
+
+# Vagrant Configuration
+unless Vagrant.has_plugin?("vagrant-auto_network")
+  raise "vagrant-auto_network is not installed!"
+end
+
+AutoNetwork.default_pool = IP_POOL
+
+Vagrant.configure("2") do |config|
+  config.vm.box_check_update = false
+
+  if Vagrant.has_plugin?("vagrant-vbguest")
+    config.vbguest.auto_update = false
+  end
+
+  HOSTS.each do | (name, cfg) |
+    box, cpus, ram = cfg
+    config.vm.define name do |machine|
+      machine.vm.box = box
+      machine.vm.guest = :debian
+
+      machine.vm.provider "virtualbox" do |vbox|
+        vbox.cpus   = cpus
+        vbox.memory = ram
+      end
+      machine.vm.hostname = name
+      machine.vm.network :private_network, :auto_network => true
+      machine.vm.synced_folder '.', '/vagrant', disabled: true
+    end
+  end
+  
+  config.vm.provision "vai" do |ansible|
+    ansible.inventory_dir = ANSIBLE_INVENTORY_DIR
+    ansible.groups = GROUPS
+  end
+end

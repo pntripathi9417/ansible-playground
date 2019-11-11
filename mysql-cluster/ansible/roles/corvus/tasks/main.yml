@@ -1,0 +1,62 @@
+---
+- block:
+  - name: Install packages
+    apt: 
+      pkg:
+        - build-essential
+        - autoconf
+        - git 
+      state: latest 
+      update_cache: yes
+
+  - name: Create corvus directory
+    file: path={{ corvus_install_path }} state=directory owner={{ corvus_user }} group={{ corvus_group }}
+
+  - name: Set kernel parameters
+    sysctl: name={{ item.name }} value={{ item.value }} state=present
+    with_items:
+      - { name: 'net.core.somaxconn', value: '1024' }
+      - { name: 'net.ipv4.tcp_tw_recycle', value: '1' }
+
+  become: true
+
+- name: Clone source
+  git: 
+    repo: "https://github.com/eleme/corvus.git" 
+    dest: "{{ corvus_src_path }}" 
+    version: "{{ corvus_version }}"
+  register: corvus_git_clone
+
+- name: Build source
+  shell: '{{ item }}'
+  args:
+    chdir: '{{ corvus_src_path }}'
+  with_items:
+    - 'git submodule update --init'
+    - 'make deps'
+    - 'make'
+  when: corvus_git_clone.changed
+
+- name: Create directories
+  file: 
+    path: '{{ corvus_install_path }}/{{ item }}' 
+    state: directory
+  with_items:
+    - conf
+    - bin
+
+- name: Install new binary
+  copy: 
+    src: '{{ corvus_src_path }}/src/corvus' 
+    dest: '{{ corvus_install_path }}/bin/corvus' 
+    remote_src: True 
+    mode: 0755
+  notify: restart corvus
+
+- name: Upload corvus config
+  template: 
+    src: corvus.conf 
+    dest: '{{ corvus_install_path }}/conf'
+  notify: restart corvus
+
+- include: service.yml

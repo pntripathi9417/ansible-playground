@@ -1,0 +1,62 @@
+---
+# Read the redis cluster tutorial for more information
+# http://redis.io/topics/cluster-tutorial
+
+- block:
+  - name: Install redis
+    apt: 
+      pkg:
+        - redis-server
+        - redis-tools
+      state: latest 
+      update_cache: yes
+    # with_items:
+    #   - redis-server
+    #   - redis-tools # contains redis-trib.rb for cluster config
+
+  - name: Start redis
+    service: name=redis-server state=started enabled=yes
+
+  - name: Update redis config
+    lineinfile: dest={{ redis_cluster_node_config_file }}
+      regexp='^{{ item.name }}'
+      line='{{ item.name }} {{ item.value }}'
+      state=present
+    with_items:
+      - { name: 'bind',                 value: '{{ redis_cluster_node_bind_address }}' }
+      - { name: 'cluster-enabled',      value: 'yes' }
+      - { name: 'cluster-config-file',  value: 'nodes.conf' }
+      - { name: 'cluster-node-timeout', value: '5000' }
+      - { name: 'appendonly',           value: 'yes' }
+    notify: restart redis
+
+  - name: install ruby gems
+    apt: 
+      pkg:
+        - rubygems 
+      state: latest
+
+  - name: install redis ruby library
+    gem: name=redis state=latest user_install=no
+
+  - name: Make redis-trib.rb executeable
+    copy: src=/usr/share/doc/redis-tools/examples/redis-trib.rb dest=/usr/local/bin/ remote_src=True mode=0755 owner=root group=root
+
+    # http://shokunin.co/blog/2014/11/11/operational_redis.html
+  - name: Set kernel parameters
+    sysctl: name={{ item.name }} value={{ item.value }} state=present
+    with_items:
+      - { name: 'vm.swappiness', value: '0' }
+      - { name: 'vm.overcommit_memory', value: '1' }
+      - { name: 'net.core.somaxconn', value: '1024' }
+      - { name: 'net.ipv4.tcp_tw_recycle', value: '1' }
+    notify: restart redis
+
+  - name: Set ulimit
+    lineinfile: dest=/etc/default/redis-server
+      regexp='^ULIMIT'
+      line='ULIMIT={{ redis_cluster_node_ulimit }}'
+      state=present
+    notify: restart redis
+
+  become: true
