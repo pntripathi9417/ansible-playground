@@ -10,6 +10,8 @@ services:
     image: redis:discover
     build: ./redis
     command: --cluster-enabled yes --bind 0.0.0.0 --loglevel warning
+    volumes: 
+      - ./data/redis:/data
     ports: 
      - 6379
      - 16379
@@ -40,7 +42,7 @@ services:
      - 443:443
     volumes:
      - /var/run/docker.sock:/var/run/docker.sock
-     - ./data:/reddie/data
+     - ./data/reddie:/reddie/data
     environment:
      - DISCOVERY_DOCKER_LABEL=redis
      - DISCOVERY_DOCKER_UNIX_SOCKET=/var/run/docker.sock

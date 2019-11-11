@@ -1,6 +1,6 @@
 # Configuration Variables
-CPUS    = 4
-RAM     = 2048 # Default memory size is in MB
+CPUS    = 6
+RAM     = 6144 # Default memory size is in MB
 IP_POOL = "10.55.0.0/24" # IP address pool for communication among VMs
 BOX = "debian/stretch64"
 
