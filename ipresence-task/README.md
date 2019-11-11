@@ -13,7 +13,7 @@ The demo implements, redis-cluster, rabbitmq-cluster, mysql-cluster using ansibl
 vagrant up
 ```
 
-## redis-cluster
+## Task 1: redis-cluster
 The demo sets up 6 redis instances - 3 master and 3 slaves
 
 ### Getting Started
@@ -55,7 +55,7 @@ cluster_stats_messages_ping_received:1793
 
 1. In case `cluster_state` is `fail` try re-running `sudo docker-compose up -d --build --scale redis=6` from within the vagrant box.
 
-## rabbitmq-cluster
+## Task 2: rabbitmq-cluster
 This demo creates a 3 Node rabbitmq cluster behind HAProxy loadbalancer.
 
 ### Getting Started
@@ -74,7 +74,7 @@ ansible-playbook provision_rabbitmq_cluster.yaml
 
 #### Debugging
 
-## mysql-replication
+## Task 3: mysql-replication
 
 ### Getting Started
 
