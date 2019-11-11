@@ -34,26 +34,17 @@
       pip:
         name: docker
     
-    - name: "Create A Volume"
-      docker_volume: 
-        name: "{{ docker_volumne }}"
-    
     - name: "Create A Network"
       docker_network:
         name: "{{ docker_network }}"
 
-    - name: Build the redis docker image
-      docker_image:
-        name: redis-instance
-        build:
-          path: ./redis
-        source: build
-
-    # Creates the number of containers defined by the variable create_containers, using default values
     - name: Create redis containers
-      docker_container:
-        name: "{{ default_container_name }}-{{ item }}"
-        image: "{{ default_container_image }}"
-        command: "{{ default_container_command }}"
-        state: present
-      with_sequence: count={{ create_containers }}
+        
+    # # Creates the number of containers defined by the variable create_containers, using default values
+    # - name: Create redis containers
+    #   docker_container:
+    #     name: "{{ default_container_name }}-{{ item }}"
+    #     image: "{{ default_container_image }}"
+    #     command: "{{ default_container_command }}"
+    #     state: present
+    #   with_sequence: count={{ create_containers }}

@@ -2,6 +2,7 @@
     "_ansible_facts_gathered": true,
     "ansible_all_ipv4_addresses": [
         "10.55.0.3",
+        "172.17.0.1",
         "10.0.2.15"
     ],
     "ansible_all_ipv6_addresses": [
@@ -24,16 +25,16 @@
     "ansible_date_time": {
         "date": "2019-11-11",
         "day": "11",
-        "epoch": "1573457533",
-        "hour": "07",
-        "iso8601": "2019-11-11T07:32:13Z",
-        "iso8601_basic": "20191111T073213284171",
-        "iso8601_basic_short": "20191111T073213",
-        "iso8601_micro": "2019-11-11T07:32:13.284421Z",
-        "minute": "32",
+        "epoch": "1573461617",
+        "hour": "08",
+        "iso8601": "2019-11-11T08:40:17Z",
+        "iso8601_basic": "20191111T084017122044",
+        "iso8601_basic_short": "20191111T084017",
+        "iso8601_micro": "2019-11-11T08:40:17.122135Z",
+        "minute": "40",
         "month": "11",
-        "second": "13",
-        "time": "07:32:13",
+        "second": "17",
+        "time": "08:40:17",
         "tz": "GMT",
         "tz_offset": "+0000",
         "weekday": "Monday",
@@ -176,6 +177,23 @@
             "circle.news"
         ]
     },
+    "ansible_docker0": {
+        "active": false,
+        "device": "docker0",
+        "id": "8000.0242d343b6af",
+        "interfaces": [],
+        "ipv4": {
+            "address": "172.17.0.1",
+            "broadcast": "172.17.255.255",
+            "netmask": "255.255.0.0",
+            "network": "172.17.0.0"
+        },
+        "macaddress": "02:42:d3:43:b6:af",
+        "mtu": 1500,
+        "promisc": false,
+        "stp": false,
+        "type": "bridge"
+    },
     "ansible_domain": "",
     "ansible_effective_group_id": 0,
     "ansible_effective_user_id": 0,
@@ -189,7 +207,7 @@
         "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         "PWD": "/home/vagrant",
         "SHELL": "/bin/bash",
-        "SUDO_COMMAND": "/bin/sh -c echo BECOME-SUCCESS-mpbhbkzoubpovtldlnotinptmuncndji ; /usr/bin/python /home/vagrant/.ansible/tmp/ansible-tmp-1573457532.65093-107577146309024/AnsiballZ_setup.py",
+        "SUDO_COMMAND": "/bin/sh -c echo BECOME-SUCCESS-fgrabcwgmthqscxumdbxuhrftryyxglb ; /usr/bin/python /home/vagrant/.ansible/tmp/ansible-tmp-1573461615.627648-73495702847262/AnsiballZ_setup.py",
         "SUDO_GID": "1000",
         "SUDO_UID": "1000",
         "SUDO_USER": "vagrant",
@@ -253,6 +271,7 @@
     "ansible_hostnqn": "",
     "ansible_interfaces": [
         "lo",
+        "docker0",
         "eth1",
         "eth0"
     ],
@@ -290,16 +309,16 @@
     },
     "ansible_machine": "x86_64",
     "ansible_machine_id": "5f957ac9dd9c4d2484792cf0be735b10",
-    "ansible_memfree_mb": 1875,
+    "ansible_memfree_mb": 587,
     "ansible_memory_mb": {
         "nocache": {
-            "free": 1942,
-            "used": 62
+            "free": 1784,
+            "used": 220
         },
         "real": {
-            "free": 1875,
+            "free": 587,
             "total": 2004,
-            "used": 129
+            "used": 1417
         },
         "swap": {
             "cached": 0,
@@ -311,18 +330,18 @@
     "ansible_memtotal_mb": 2004,
     "ansible_mounts": [
         {
-            "block_available": 4285025,
+            "block_available": 4037065,
             "block_size": 4096,
             "block_total": 4819261,
-            "block_used": 534236,
+            "block_used": 782196,
             "device": "/dev/sda1",
             "fstype": "ext4",
-            "inode_available": 1196634,
+            "inode_available": 1169830,
             "inode_total": 1234576,
-            "inode_used": 37942,
+            "inode_used": 64746,
             "mount": "/",
             "options": "rw,relatime,errors=remount-ro,data=ordered",
-            "size_available": 17551462400,
+            "size_available": 16535818240,
             "size_total": 19739693056,
             "uuid": "4d725a8f-282c-4b98-ac69-c8e3c7b8eca5"
         }
@@ -392,8 +411,49 @@
     "ansible_swapfree_mb": 1020,
     "ansible_swaptotal_mb": 1020,
     "ansible_system": "Linux",
+    "ansible_system_capabilities": [
+        "cap_chown",
+        "cap_dac_override",
+        "cap_dac_read_search",
+        "cap_fowner",
+        "cap_fsetid",
+        "cap_kill",
+        "cap_setgid",
+        "cap_setuid",
+        "cap_setpcap",
+        "cap_linux_immutable",
+        "cap_net_bind_service",
+        "cap_net_broadcast",
+        "cap_net_admin",
+        "cap_net_raw",
+        "cap_ipc_lock",
+        "cap_ipc_owner",
+        "cap_sys_module",
+        "cap_sys_rawio",
+        "cap_sys_chroot",
+        "cap_sys_ptrace",
+        "cap_sys_pacct",
+        "cap_sys_admin",
+        "cap_sys_boot",
+        "cap_sys_nice",
+        "cap_sys_resource",
+        "cap_sys_time",
+        "cap_sys_tty_config",
+        "cap_mknod",
+        "cap_lease",
+        "cap_audit_write",
+        "cap_audit_control",
+        "cap_setfcap",
+        "cap_mac_override",
+        "cap_mac_admin",
+        "cap_syslog",
+        "cap_wake_alarm",
+        "cap_block_suspend",
+        "cap_audit_read+ep"
+    ],
+    "ansible_system_capabilities_enforced": "True",
     "ansible_system_vendor": "innotek GmbH",
-    "ansible_uptime_seconds": 34,
+    "ansible_uptime_seconds": 4116,
     "ansible_user_dir": "/root",
     "ansible_user_gecos": "root",
     "ansible_user_gid": 0,
@@ -405,6 +465,34 @@
     "ansible_virtualization_role": "guest",
     "ansible_virtualization_type": "virtualbox",
     "discovered_interpreter_python": "/usr/bin/python",
+    "docker_network": {
+        "Attachable": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {},
+        "Created": "2019-11-11T08:40:39.901055825Z",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Config": [
+                {
+                    "Gateway": "172.18.0.1",
+                    "Subnet": "172.18.0.0/16"
+                }
+            ],
+            "Driver": "default",
+            "Options": null
+        },
+        "Id": "5d4e1394652a2e4b4d29ce403e78c46c86a10ba69273f255aa7b6b29ed945f0e",
+        "Ingress": false,
+        "Internal": false,
+        "Labels": {},
+        "Name": "redis-cluster-network",
+        "Options": {},
+        "Scope": "local"
+    },
     "gather_subset": [
         "all"
     ],
