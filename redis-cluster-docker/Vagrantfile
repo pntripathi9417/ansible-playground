@@ -5,13 +5,10 @@ IP_POOL = "10.55.0.0/24" # IP address pool for communication among VMs
 BOX = "debian/stretch64"
 
 HOSTS = {
-  "ipresence-task-redis-cluster" => [BOX, CPUS, RAM]
+  "ipresence-task" => [BOX, CPUS, RAM]
 }
 
-GROUPS = {
-  "corvus" => ["corvus-1"],
-  "redis"  => ["redis-1","redis-2","redis-3","redis-4","redis-5","redis-6"]
-}
+GROUPS = {}
 
 VAGRANTFILE_DIR = File.dirname(__FILE__)
 ANSIBLE_INVENTORY_DIR = "#{VAGRANTFILE_DIR}/ansible/inventory"
@@ -42,7 +39,6 @@ Vagrant.configure("2") do |config|
       end
       machine.vm.hostname = name
       machine.vm.network :private_network, :auto_network => true
-      machine.vm.synced_folder '.', '/vagrant', disabled: true
     end
   end
 
