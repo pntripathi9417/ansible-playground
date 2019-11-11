@@ -1,0 +1,59 @@
+---
+- hosts: all
+  become: true
+  vars:
+    create_containers: 6
+    default_container_name: redis
+    default_container_image: redis:5.0.6
+    default_container_command: redis-server
+    docker_volume: "rdbdata"
+    docker_network: "redis-cluster-network"
+
+  tasks:
+    - name: Install aptitude using apt
+      apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+
+    - name: Install required system packages
+      apt: name={{ item }} state=latest update_cache=yes
+      loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python-pip', 'virtualenv', 'python-setuptools']
+
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/debian/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/debian stretch stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      apt: update_cache=yes name=docker-ce state=latest
+
+    - name: Install Docker Module for Python
+      pip:
+        name: docker
+    
+    - name: "Create A Volume"
+      docker_volume: 
+        name: "{{ docker_volumne }}"
+    
+    - name: "Create A Network"
+      docker_network:
+        name: "{{ docker_network }}"
+
+    - name: Build the redis docker image
+      docker_image:
+        name: redis-instance
+        build:
+          path: ./redis
+        source: build
+
+    # Creates the number of containers defined by the variable create_containers, using default values
+    - name: Create redis containers
+      docker_container:
+        name: "{{ default_container_name }}-{{ item }}"
+        image: "{{ default_container_image }}"
+        command: "{{ default_container_command }}"
+        state: present
+      with_sequence: count={{ create_containers }}
