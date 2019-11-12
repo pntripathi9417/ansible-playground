@@ -114,14 +114,24 @@ ansible-playbook provision_mysql_cluster.yaml
 Run following commands from the VM to verify replication setup is working properly.
 
 ```
-docker-compose exec mysqlmaster mysql -uroot -proot -e "CREATE DATABASE test_replication;"
+sudo docker-compose exec mysqlmaster mysql -uroot -proot -e "CREATE DATABASE test_replication;"
 
-docker-compose exec mysqlslave mysql -uroot -proot -e "SHOW DATABASES;"
+sudo docker-compose exec mysqlslave mysql -uroot -proot -e "SHOW DATABASES;"
 ```
 You should see response as follows:
 
 ```
-
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| test_replication   |
++--------------------+
 ```
 
 #### Debugging
+
+1. Wait for 60s if the verifications didn't work as expected. As `mysqlconfigure` script runs after 60s.

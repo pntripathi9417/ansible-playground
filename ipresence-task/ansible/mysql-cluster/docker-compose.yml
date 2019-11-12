@@ -22,6 +22,9 @@ services:
       - "MYSQL_ROOT_PASSWORD=root"
       - "MYSQL_REPLICATION_USER=repl"
       - "MYSQL_REPLICATION_PASSWORD=repl"
+    depends_on: 
+      - mysqlmaster
+      - mysqlslave
     volumes:
-      - ./script:/script/
-    command: /bin/bash -x /script/mysql_connector.sh
+      - ./mysql_connector.sh:/tmp/mysql_connector.sh
+    command: /bin/bash -x /tmp/mysql_connector.sh
