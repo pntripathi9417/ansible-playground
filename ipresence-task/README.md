@@ -111,5 +111,17 @@ ansible-playbook provision_mysql_cluster.yaml
 ```
 
 #### Verify MySQL Replicaset
+Run following commands from the VM to verify replication setup is working properly.
+
+```
+docker-compose exec mysqlmaster mysql -uroot -proot -e "CREATE DATABASE test_replication;"
+
+docker-compose exec mysqlslave mysql -uroot -proot -e "SHOW DATABASES;"
+```
+You should see response as follows:
+
+```
+
+```
 
 #### Debugging
