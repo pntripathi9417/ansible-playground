@@ -92,6 +92,7 @@ ansible-playbook provision_rabbitmq_cluster.yaml
 
 ![HAProxy](./images/rabbitmq-cluster-2.png)
 
+__The credentials are configurable through environment variables within `docker-compose.yml` file.__
 
 #### Debugging
 

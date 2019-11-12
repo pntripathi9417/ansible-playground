@@ -40,7 +40,6 @@
         build: yes
 
     - name: "Add rabbitmq nodes to cluster"
-      become: yes
       shell: "sleep 60 &&
               docker exec -ti rabbitmq-node-2 bash -c 'rabbitmqctl stop_app' &&
               docker exec -ti rabbitmq-node-2 bash -c 'rabbitmqctl join_cluster rabbit@rabbitmq-node-1' &&
