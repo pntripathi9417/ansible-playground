@@ -19,12 +19,7 @@ services:
      - redis
     depends_on:
       - discover
-    healthcheck:
-      tntest: ["CMD", "redis-cli","ping"]
-      ierval: 30s
-      timeout: 10s
-      retries: 3
-
+      
   rediscluster:
     image: docker
     volumes:
@@ -42,7 +37,7 @@ services:
       "
     depends_on:
      - redis
-     
+
   reddie:
     image: get-reddie.com/reddie
     ports:
