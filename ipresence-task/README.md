@@ -51,9 +51,24 @@ cluster_stats_messages_sent:3562
 cluster_stats_messages_ping_received:1793
 ```
 
+You can also view the cluster setup by accessing `https://localhost/` in the browser. The result should look like following:
+
+![Image](./images/redis-cluster.png)
+
 #### Debugging
 
-1. In case `cluster_state` is `fail` try re-running `sudo docker-compose up -d --build --scale redis=6` from within the vagrant box.
+1. In case `cluster_state` is `fail` try re-running `ansible-playbook provision_redis_cluster.yaml`
+2. In case `cluster_state` is still `fail` try re-running `sudo docker-compose up -d --build --scale redis=6` from within the vagrant box.
+3. The issue happens because of the final command to setup the cluster may fail is some cases. Retrying generally works. But if it does not work as well try running following shell script:
+```
+cluster_hosts=''
+docker ps -q -f label=redis | xargs docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' | 
+{ 
+  while read private_ip; do cluster_hosts=\"$$cluster_hosts $$private_ip:6379\"; done
+  echo $$cluster_hosts
+  docker run --net redis-cluster_default --rm redis:latest redis-cli -h redis --cluster create $$cluster_hosts --cluster-replicas 1 --cluster-yes
+}
+```
 
 ## Task 2: rabbitmq-cluster
 This demo creates a 3 Node rabbitmq cluster behind HAProxy loadbalancer.
