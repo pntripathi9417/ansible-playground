@@ -23,5 +23,5 @@ services:
       - "MYSQL_REPLICATION_USER=repl"
       - "MYSQL_REPLICATION_PASSWORD=repl"
     volumes:
-      - ./mysql_connector.sh:/tmp/mysql_connector.sh
-    command: /bin/bash -x /tmp/mysql_connector.sh
+      - ./script:/script/
+    command: /bin/bash -x /script/mysql_connector.sh
