@@ -38,5 +38,6 @@
       docker_compose:
         project_src: "/vagrant/ansible/redis-cluster/"
         build: yes
+        debug: yes
         scale:
           redis: 6

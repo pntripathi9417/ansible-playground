@@ -1,17 +1,17 @@
 version: '2'
 services:
+
   discover:
     build: ./discover
     image: discover
     network_mode: host
     volumes:
      - /var/run/docker.sock:/var/run/docker.sock
+  
   redis:
     image: redis:discover
     build: ./redis
     command: --cluster-enabled yes --bind 0.0.0.0 --loglevel warning
-    volumes: 
-      - ./data/redis:/data
     ports: 
      - 6379
      - 16379
@@ -19,6 +19,12 @@ services:
      - redis
     depends_on:
       - discover
+    healthcheck:
+      tntest: ["CMD", "redis-cli","ping"]
+      ierval: 30s
+      timeout: 10s
+      retries: 3
+
   rediscluster:
     image: docker
     volumes:
@@ -36,6 +42,7 @@ services:
       "
     depends_on:
      - redis
+     
   reddie:
     image: get-reddie.com/reddie
     ports:
