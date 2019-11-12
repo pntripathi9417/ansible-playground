@@ -84,10 +84,19 @@ ansible-playbook provision_rabbitmq_cluster.yaml
 
 #### Verify RabbitMQ Cluster
 
-1. You can access HAProxy status report by accessing `http://localhost:1936/haproxy?stats` with the credentials `haproxy:haproxy`
-2. You can access rabbitmq console via `http://localhost:15672/` with the credentials `admin:Admin@123`
+1. You can access HAProxy status report by accessing `http://localhost:1936/haproxy?stats` with the credentials `haproxy:haproxy`. It should look like following;
+
+![HAProxy](./images/rabbitmq-cluster-1.png)
+
+2. You can access rabbitmq console via `http://localhost:15672/` with the credentials `admin:Admin@123`. It should look like following:
+
+![HAProxy](./images/rabbitmq-cluster-2.png)
+
 
 #### Debugging
+
+1. In case of any failure just try re-running `ansible-playbook provision_rabbitmq_cluster.yaml
+`.
 
 ## Task 3: mysql-replication
 
