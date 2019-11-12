@@ -14,7 +14,7 @@ vagrant up
 ```
 
 ## Task 1: redis-cluster
-The demo sets up 6 redis instances - 3 master and 3 slaves
+The demo sets up 6 redis instances with 1 slave replica each.
 
 ### Getting Started
 
